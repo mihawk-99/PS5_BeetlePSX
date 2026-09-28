@@ -220,7 +220,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "precache", "Pre-Cache" },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* The whole disc in memory: reading the image as the game asks stalled the core on the PS5 (up to 4% of a 10 s window in Crash Bandicoot's attract sequence; none with the disc precached). */
+      "precache"
+#else
       "sync"
+#endif
    },
 #endif
    {

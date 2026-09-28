@@ -303,7 +303,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "16x",        NULL },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* The PS5 renders at the highest internal resolution. */
+      "16x"
+#else
       "1x(native)"
+#endif
    },
 #if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES) || defined(HAVE_VULKAN)
    {
@@ -491,7 +496,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "32bpp",         "32 bpp" },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* 32-bit colour: no 16-bit banding at high resolution. */
+      "32bpp"
+#else
       "16bpp(native)"
+#endif
    },
    // Sort of, it's more like 15-bit high color and 24-bit true color for visible output. The alpha channel is used for mask bit. Vulkan renderer uses ABGR1555_555 for 31 bits internal? FMVs are always 24-bit on all renderers like original hardware (BGR888, no alpha)
 #endif
@@ -508,7 +518,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "disabled",            NULL },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* 32-bit colour needs no dithering. */
+      "disabled"
+#else
       "1x(native)"
+#endif
    },
 #ifdef HAVE_VULKAN
    {
@@ -636,7 +651,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "16x", NULL },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* The most multisampling the PS5's GPU offers (8 samples). */
+      "8x"
+#else
       "1x"
+#endif
    },
    {
       BEETLE_OPT(mdec_yuv),
@@ -650,7 +670,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "enabled",  NULL },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* Smooth the chroma of MDEC videos. */
+      "enabled"
+#else
       "disabled"
+#endif
    },
    {
       BEETLE_OPT(track_textures),
@@ -836,7 +861,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "memory + CPU", "Memory + CPU (Buggy)" },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* PGXP: sub-pixel vertex precision, no wobbling polygons. */
+      "memory only"
+#else
       "disabled"
+#endif
    },
    {
       BEETLE_OPT(pgxp_2d_tol),
@@ -902,7 +932,12 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "enabled",  NULL },
          { NULL, NULL },
       },
+#ifdef __PROSPERO__
+      /* PGXP: perspective-correct texturing. */
+      "enabled"
+#else
       "disabled"
+#endif
    },
    {
       BEETLE_OPT(display_internal_fps),

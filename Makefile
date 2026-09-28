@@ -8,6 +8,17 @@ HAVE_CHD = 1
 HAVE_CDROM = 0
 HAVE_LIGHTREC = 1
 LINK_STATIC_LIBCPLUSPLUS = 1
+
+# The PS5 (a homebrew title's libretro core): the Vulkan renderer only, no
+# OpenGL and no physical CD drive. Lightrec stays off until its code buffer
+# comes from the console's executable memory; the interpreter runs the games.
+ifeq ($(platform), ps5)
+   HAVE_VULKAN = 1
+   HAVE_OPENGL = 0
+   HAVE_CDROM = 0
+   HAVE_LIGHTREC = 0
+   LINK_STATIC_LIBCPLUSPLUS = 0
+endif
 THREADED_RECOMPILER = 1
 LIGHTREC_DEBUG = 0
 LIGHTREC_LOG_LEVEL = 3
@@ -103,8 +114,16 @@ ifneq ($(LIGHTREC_DEBUG), 0)
    endif
 endif
 
+# PS5: the console's libraries resolve at load time, so no --no-undefined.
+ifeq ($(platform), ps5)
+   TARGET := $(TARGET_NAME)_libretro.so
+   fpic   := -fPIC
+   SHARED := -shared -Wl,--version-script=link.T
+   IS_X86 = 1
+   LDFLAGS += $(PTHREAD_FLAGS)
+
 # Unix
-ifneq (,$(findstring unix,$(platform)))
+else ifneq (,$(findstring unix,$(platform)))
    # local VFS may mmap FREQUENT_ACCESS files (cdstream zero-copy)
    FLAGS += -DHAVE_MMAP
    TARGET := $(TARGET_NAME)_libretro.so

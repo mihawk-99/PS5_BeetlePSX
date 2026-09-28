@@ -651,12 +651,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "16x", NULL },
          { NULL, NULL },
       },
-#ifdef __PROSPERO__
-      /* The most multisampling the PS5's GPU offers (8 samples). */
-      "8x"
-#else
       "1x"
-#endif
    },
    {
       BEETLE_OPT(mdec_yuv),
